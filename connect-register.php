@@ -1,6 +1,6 @@
 <?php
 add_action('wp_login', 'add_users_on_login', 10, 2);
-function add_users_on_login($login, $user)
+function add_users_on_login($login, $user) {
     global $wpdb;
     $user_id = $user->ID;
     $user_info = get_userdata($user_id);
