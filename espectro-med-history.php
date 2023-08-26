@@ -40,7 +40,7 @@ function med_history_type()
         'show_in_menu'       => true,
         'query_var'          => true,
         'rewrite'            => array('slug' => 'med-history'),
-        'capability_type' => 'med_history',
+        'capability_type' => 'post',
         'capabilities' => array(
             'edit_post' => 'edit_med_history',
             'read_post' => 'read_med_history',
