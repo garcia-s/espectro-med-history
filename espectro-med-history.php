@@ -75,6 +75,7 @@ function med_history_type()
 
     $role = get_role('wpamelia-provider');
     if ($role) {
+        $role->add_cap('upload_files');
         $role->add_cap('edit_med_history');
         $role->add_cap('read_med_history');
         $role->add_cap('delete_med_history');
