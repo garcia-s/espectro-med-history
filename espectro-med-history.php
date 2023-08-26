@@ -60,6 +60,19 @@ function med_history_type()
 
     register_post_type('med_history', $args);
 
+
+
+    $role = get_role('administrator');
+    if ($role) {
+        $role->add_cap('edit_med_history');
+        $role->add_cap('read_med_history');
+        $role->add_cap('delete_med_history');
+        $role->add_cap('edit_med_histories');
+        $role->add_cap('edit_others_med_histories');
+        $role->add_cap('publish_med_histories');
+        $role->add_cap('read_private_med_histories');
+    }
+
     $role = get_role('wpamelia-provider');
     if ($role) {
         $role->add_cap('edit_med_history');
