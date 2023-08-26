@@ -1,22 +1,25 @@
 <?php
 /*
 *
-Plugin Name: Historial Medico Espectro 
-Description: Creates a custom post type and adds it to the WordPress menu.
-Version 1.0
+Plugin Name: Espectro Amelia integraciones.
+Description: Intregraciones de Amelia en espectro.cl
+Version: 1.0
 Author: Juan Garcia
 *
 */
 
-define("WP_ESPECTRO_DIR",plugin_dir_path(__FILE__));
-require_once(WP_ESPECTRO_DIR . "connect-register.php");
+define("WP_ESPECTRO_DIR", plugin_dir_path(__file__));
 
- function custom_post_type()
+require_once(WP_ESPECTRO_DIR . "helpers.php");
+
+
+function med_history_type()
 {
+
     $labels = array(
         'name'               => 'Historiales Medicos',
         'singular_name'      => 'Historial Médico',
-        'menu_name'          => 'Historiales Medicos',
+        'menu_name'          => 'Historiales Medico',
         'name_admin_bar'     => 'Historial Médico',
         'add_new'            => 'Nuevo',
         'add_new_item'       => 'Agregar Historial Médico',
@@ -37,23 +40,35 @@ require_once(WP_ESPECTRO_DIR . "connect-register.php");
         'show_in_menu'       => true,
         'query_var'          => true,
         'rewrite'            => array('slug' => 'med-history'),
-        'capability_type'    => 'post',
+        'capability_type' => 'med_history',
+        'capabilities' => array(
+            'edit_post' => 'edit_med_history',
+            'read_post' => 'read_med_history',
+            'delete_post' => 'delete_med_history',
+            'edit_posts' => 'edit_med_histories',
+            'edit_others_posts' => 'edit_others_med_histories',
+            'publish_posts' => 'publish_med_histories',
+            'read_private_posts' => 'read_private_med_histories',
+        ),
         'has_archive'        => true,
         "hierarchical"       => false,
         'menu_position'      => -1,
         'menu_icon' => 'dashicons-heart',
-        'supports'           => array('title', 'editor', 'author', 'thumbnail', 'excerpt')
+        'supports'           => array('title', 'editor')
     );
 
-    register_post_type('custom_post', $args);
+    register_post_type('med_history', $args);
+
+    $role = get_role('wpamelia-provider');
+    if ($role) {
+        $role->add_cap('edit_med_history');
+        $role->add_cap('read_med_history');
+        $role->add_cap('delete_med_history');
+        $role->add_cap('edit_med_histories');
+        $role->add_cap('edit_others_med_histories');
+        $role->add_cap('publish_med_histories');
+        $role->add_cap('read_private_med_histories');
+    }
 }
 
-add_action('init', 'custom_post_type');
-
-
-function add_custom_role()
-{
-    $capabilities = get_post_type_object('custom_post')->cap;
-    add_role('medical_role', 'Médico', $capabilities);
-}
-add_action('init', 'add_custom_role');
+add_action('init', 'med_history_type');
