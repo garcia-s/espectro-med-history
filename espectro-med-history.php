@@ -33,8 +33,9 @@ function med_history_type()
         'not_found_in_trash' => 'No se han encontrado historiales en la papelera',
     );
     $args = array(
+
         'labels'             => $labels,
-        'public'             => true,
+        'public'             => false,
         'publicly_queryable' => true,
         'show_ui'            => true,
         'show_in_menu'       => true,
@@ -72,3 +73,11 @@ function med_history_type()
 }
 
 add_action('init', 'med_history_type');
+
+
+function custom_post_type_deactivation()
+{
+    unregister_post_type('med_history');
+}
+
+register_deactivation_hook(__FILE__, 'custom_post_type_deactivation');
